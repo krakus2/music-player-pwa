@@ -31,6 +31,7 @@ interface ISongFile {
 }
 
 interface ISongsState {
+  // TODO: We should not store the blobs, only the needed data like artist, title, album, length (?), cover
   songs: Array<ISongFile>
   addSong: (song: RcFile) => void
   deleteSong: (id: string) => void
