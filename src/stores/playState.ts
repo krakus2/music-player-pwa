@@ -5,6 +5,7 @@ interface IPlayState {
   id: string | null
   selectSong: (songId: string) => void
   getIsSelected: (songId: string) => boolean
+  // isAnySelected: boolean
 }
 
 export const usePlayState = create<IPlayState>()(
@@ -17,5 +18,6 @@ export const usePlayState = create<IPlayState>()(
         }
       }),
     getIsSelected: (songId) => get().id === songId,
+    // isAnySelected: Boolean(get().id),
   }))
 )

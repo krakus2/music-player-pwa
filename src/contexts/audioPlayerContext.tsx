@@ -1,3 +1,4 @@
+import { HowlOptions } from 'howler'
 import { createContext, ReactNode, useContext } from 'react'
 import { AudioPlayerControls, useAudioPlayer } from 'react-use-audio-player'
 import { usePlayState } from 'src/stores/playState'
@@ -18,19 +19,31 @@ export const AudioPlayerContextProvider = ({
     deleteSong,
   }))
 
-  const { id } = usePlayState(({ id }) => ({
+  const { id, selectSong } = usePlayState(({ id, selectSong }) => ({
     id,
+    selectSong,
   }))
 
   const selectedSong = songs.find((song) => song.file.uid === id)
 
   const playerOptions = !!selectedSong
-    ? {
+    ? ({
         src: selectedSong.objectUrl,
         // format: [selectedSong.file.type],
         format: ['mp3'],
         autoplay: true,
-      }
+        onend: () => {
+          const currentSongIndex = songs.findIndex(
+            (song) => song.file.uid === id
+          )
+          const nextSongIndex = currentSongIndex + 1
+          const nextSong = songs[nextSongIndex]
+
+          if (!!nextSong) {
+            selectSong(nextSong.file.uid)
+          }
+        },
+      } as HowlOptions)
     : undefined
 
   console.log({ selectedSong, songs, id, playerOptions })

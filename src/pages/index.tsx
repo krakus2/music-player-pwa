@@ -1,4 +1,6 @@
 import { Inter } from '@next/font/google'
+import { PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
 
 import styles from 'src/styles/Home.module.css'
 import { useSongsStore } from 'src/stores/songs'
@@ -16,12 +18,15 @@ export default function Home() {
     songs,
   }))
 
-  const { selectSong, getIsSelected } = usePlayState(
-    ({ selectSong, getIsSelected }) => ({
+  const { selectSong, getIsSelected, id } = usePlayState(
+    ({ selectSong, getIsSelected, id }) => ({
       selectSong,
       getIsSelected,
+      id,
     })
   )
+
+  const isAnySelected = !!id
 
   return (
     <>
@@ -40,9 +45,19 @@ export default function Home() {
               const isPlaying = isSelected && playing
 
               return (
-                <div className='flex gap-8' key={song.file.uid}>
+                <div className='flex gap-8 items-center' key={song.file.uid}>
                   <p>{song.file.name}</p>
-                  <button
+                  <Button
+                    type='default'
+                    shape='round'
+                    icon={
+                      isPlaying ? (
+                        <PauseCircleOutlined />
+                      ) : (
+                        <PlayCircleOutlined />
+                      )
+                    }
+                    size='large'
                     onClick={() => {
                       if (isSelected) {
                         return togglePlayPause()
@@ -50,13 +65,27 @@ export default function Home() {
 
                       selectSong(song.file.uid)
                     }}
-                  >
-                    {isPlaying ? 'Pause' : 'Play'}
-                  </button>
+                  />
                 </div>
               )
             })}
           </div>
+          {isAnySelected && (
+            <div>
+              Audio controls:
+              <div className='flex gap-2'>
+                <Button
+                  type='default'
+                  shape='round'
+                  size='large'
+                  icon={
+                    playing ? <PauseCircleOutlined /> : <PlayCircleOutlined />
+                  }
+                  onClick={togglePlayPause}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </>
