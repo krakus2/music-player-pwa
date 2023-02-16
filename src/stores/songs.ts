@@ -31,7 +31,7 @@ interface ISongFile {
 }
 
 interface ISongsState {
-  // TODO: We should not store the blobs, only the needed data like artist, title, album, length (?), cover
+  // TODO: We should not store the blobs, only the needed data like artist, title, album, length (?)
   songs: Array<ISongFile>
   addSong: (song: RcFile) => void
   deleteSong: (id: string) => void
@@ -55,9 +55,12 @@ export const useSongsStore = create<ISongsState>()(
           ],
         }
       }),
-    deleteSong: (id) => {
-      console.log({ id })
-    },
+    deleteSong: (id) =>
+      set((state) => {
+        return {
+          songs: state.songs.filter((song) => song.file.uid !== id),
+        }
+      }),
     // hydration
     // _hasHydrated: false,
     // _setHasHydrated: (state) => {

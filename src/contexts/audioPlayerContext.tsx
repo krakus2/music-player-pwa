@@ -1,5 +1,4 @@
 import { HowlOptions } from 'howler'
-
 import { createContext, ReactNode, useContext } from 'react'
 import { AudioPlayerControls, useAudioPlayer } from 'react-use-audio-player'
 

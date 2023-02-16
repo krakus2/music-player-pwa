@@ -12,8 +12,7 @@ export const AddSong = () => {
     accept: 'audio/mpeg3',
     name: 'addSong',
     showUploadList: false,
-    // TODO: Only for convenience, change later
-    multiple: false,
+    multiple: true,
     beforeUpload(file) {
       addSong(file)
 
