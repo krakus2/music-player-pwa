@@ -4,6 +4,7 @@ import { RcFile } from 'antd/es/upload'
 import {
   /* createJSONStorage, persist, */ StateStorage,
 } from 'zustand/middleware'
+import getBlobDuration from 'get-blob-duration'
 
 localforage.config({
   name: 'Music App PWA',
@@ -28,6 +29,9 @@ export default class SongsAsyncPersistStorage implements StateStorage {
 interface ISongFile {
   file: RcFile
   objectUrl: string
+  props: {
+    duration: number
+  }
 }
 
 interface ISongsState {
@@ -43,18 +47,26 @@ export const useSongsStore = create<ISongsState>()(
   // persist(
   (set) => ({
     songs: [],
-    addSong: (song) =>
+    addSong: async (song) => {
+      const objectUrl = URL.createObjectURL(song)
+      const duration = await getBlobDuration(objectUrl)
+
       set((state) => {
         return {
           songs: [
             ...state.songs,
             {
               file: song,
-              objectUrl: URL.createObjectURL(song),
+              objectUrl,
+              props: {
+                duration,
+              },
             },
           ],
         }
-      }),
+      })
+    },
+
     deleteSong: (id) =>
       set((state) => {
         return {

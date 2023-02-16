@@ -1,15 +1,21 @@
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons'
+import {
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons'
 import { Button } from 'antd'
 
 import { useSongsStore } from 'src/stores/songs'
 import { usePlayState } from 'src/stores/playState'
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
+import { getMinutesFromSeconds } from 'src/utils/getMinutesFromSeconds'
 
 export const SongList = () => {
   const { togglePlayPause, playing } = useAudioPlayerContext()
 
-  const { songs } = useSongsStore(({ songs }) => ({
+  const { songs, deleteSong } = useSongsStore(({ songs, deleteSong }) => ({
     songs,
+    deleteSong,
   }))
 
   const { selectSong, getIsSelected } = usePlayState(
@@ -31,23 +37,37 @@ export const SongList = () => {
 
           return (
             <div
-              className='flex items-center justify-between'
+              className='flex items-center justify-between gap-3'
               key={song.file.uid}
             >
-              <p>{song.file.name}</p>
-              <Button
-                type='default'
-                shape='round'
-                icon={isPlaying ? <PauseCircleFilled /> : <PlayCircleFilled />}
-                size='large'
-                onClick={() => {
-                  if (isSelected) {
-                    return togglePlayPause()
+              <div className='flex items-center gap-1'>
+                <Button
+                  type='default'
+                  shape='round'
+                  icon={
+                    isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />
                   }
+                  size='large'
+                  onClick={() => {
+                    if (isSelected) {
+                      return togglePlayPause()
+                    }
 
-                  selectSong(song.file.uid)
-                }}
-              />
+                    selectSong(song.file.uid)
+                  }}
+                />
+                <span>{song.file.name}</span>
+              </div>
+              <div className='flex items-center gap-1'>
+                <span>{getMinutesFromSeconds(song.props.duration)}</span>
+                <Button
+                  type='default'
+                  shape='round'
+                  icon={<DeleteOutlined />}
+                  size='large'
+                  onClick={() => deleteSong(song.file.uid)}
+                />
+              </div>
             </div>
           )
         })}

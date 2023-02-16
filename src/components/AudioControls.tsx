@@ -10,9 +10,11 @@ import { FaRandom } from 'react-icons/fa'
 import { usePlayState } from 'src/stores/playState'
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
+import { getMinutesFromSeconds } from 'src/utils/getMinutesFromSeconds'
 
 export const AudioControls = () => {
-  const { togglePlayPause, playing, ready } = useAudioPlayerContext()
+  const { togglePlayPause, playing, ready, duration, ...rest } =
+    useAudioPlayerContext()
   const { playNextSong, playPreviousSong } = useSongDerivatives()
 
   const { isShuffleEnabled, toggleShuffle } = usePlayState(
@@ -23,11 +25,13 @@ export const AudioControls = () => {
     })
   )
 
+  console.log(rest.player?.seek())
+
   if (!ready) return null
 
   return (
     <div>
-      Audio controls:
+      <p>{getMinutesFromSeconds(duration)}</p>
       <div className='flex gap-1 justify-between'>
         <Button
           type='default'
