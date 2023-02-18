@@ -10,13 +10,16 @@ export const useSongDerivatives = () => {
     deleteSong,
   }))
 
-  const { id, selectSong, isShuffleEnabled } = usePlayState(
-    ({ id, selectSong, isShuffleEnabled }) => ({
-      id,
-      selectSong,
-      isShuffleEnabled,
-    })
-  )
+  const { id, selectSong, isShuffleEnabled, repeatMode, setRepeatMode } =
+    usePlayState(
+      ({ id, selectSong, isShuffleEnabled, repeatMode, setRepeatMode }) => ({
+        id,
+        selectSong,
+        isShuffleEnabled,
+        repeatMode,
+        setRepeatMode,
+      })
+    )
 
   const selectedSong = songs.find((song) => song.file.uid === id)
   const selectedSongIndex = songs.findIndex((song) => song.file.uid === id)
@@ -35,6 +38,12 @@ export const useSongDerivatives = () => {
   const previousSong = songs[previousSongIndex]
 
   const playNextSong = () => {
+    console.log('playNextSong')
+
+    if (repeatMode === 'one') {
+      setRepeatMode('off')
+    }
+
     if (isShuffleEnabled) {
       if (!randomShuffleSongId)
         throw new Error('randomShuffleSongId not available')

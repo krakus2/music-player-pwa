@@ -11,7 +11,7 @@ import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { getMinutesFromSeconds } from 'src/utils/getMinutesFromSeconds'
 
 export const SongList = () => {
-  const { togglePlayPause, playing } = useAudioPlayerContext()
+  const { togglePlayPause, playing, stop } = useAudioPlayerContext()
 
   const { songs, deleteSong } = useSongsStore(({ songs, deleteSong }) => ({
     songs,
@@ -28,7 +28,7 @@ export const SongList = () => {
   return (
     <div>
       <h1>Songs:</h1>
-      <div className='flex flex-col gap-1'>
+      <div className='flex flex-col gap-1 mt-2'>
         {songs.map((song) => {
           // TODO: Probably should be moved to the context
           // TODO: Better naming to suggest that it's in regard to specific song
@@ -65,7 +65,10 @@ export const SongList = () => {
                   shape='round'
                   icon={<DeleteOutlined />}
                   size='large'
-                  onClick={() => deleteSong(song.file.uid)}
+                  onClick={() => {
+                    stop()
+                    deleteSong(song.file.uid)
+                  }}
                 />
               </div>
             </div>

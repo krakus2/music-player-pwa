@@ -47,16 +47,22 @@ export const useSongsStore = create<ISongsState>()(
   // persist(
   (set) => ({
     songs: [],
-    addSong: async (song) => {
-      const objectUrl = URL.createObjectURL(song)
+    addSong: async (newSong) => {
+      const objectUrl = URL.createObjectURL(newSong)
       const duration = await getBlobDuration(objectUrl)
 
       set((state) => {
+        if (state.songs.find((song) => song.file.name === newSong.name)) {
+          console.error('Duplicate!')
+
+          return { songs: state.songs }
+        }
+
         return {
           songs: [
             ...state.songs,
             {
-              file: song,
+              file: newSong,
               objectUrl,
               props: {
                 duration,

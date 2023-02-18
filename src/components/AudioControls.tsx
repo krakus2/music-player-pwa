@@ -6,32 +6,45 @@ import {
 } from '@ant-design/icons'
 import { Button } from 'antd'
 import { FaRandom } from 'react-icons/fa'
+import { RiRepeat2Fill, RiRepeatOneFill } from 'react-icons/ri'
 
 import { usePlayState } from 'src/stores/playState'
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
-import { getMinutesFromSeconds } from 'src/utils/getMinutesFromSeconds'
+
+import { ProgressBar } from './ProgressBar'
 
 export const AudioControls = () => {
-  const { togglePlayPause, playing, ready, duration, ...rest } =
-    useAudioPlayerContext()
-  const { playNextSong, playPreviousSong } = useSongDerivatives()
+  const { togglePlayPause, playing, ready, loading } = useAudioPlayerContext()
+  const { playNextSong, playPreviousSong, selectedSong } = useSongDerivatives()
 
-  const { isShuffleEnabled, toggleShuffle } = usePlayState(
-    ({ id, isShuffleEnabled, toggleShuffle }) => ({
-      id,
-      isShuffleEnabled,
-      toggleShuffle,
-    })
-  )
+  const { isShuffleEnabled, toggleShuffle, repeatMode, toggleRepeatMode } =
+    usePlayState(
+      ({
+        id,
+        isShuffleEnabled,
+        toggleShuffle,
+        repeatMode,
+        toggleRepeatMode,
+      }) => ({
+        id,
+        isShuffleEnabled,
+        toggleShuffle,
+        repeatMode,
+        toggleRepeatMode,
+      })
+    )
 
-  console.log(rest.player?.seek())
+  const playerNotReady = !selectedSong || !(ready || loading)
 
-  if (!ready) return null
+  if (playerNotReady) return null
+
+  const title = selectedSong.file.name.split('.')[0] ?? 'No title'
 
   return (
-    <div>
-      <p>{getMinutesFromSeconds(duration)}</p>
+    <div className='mt-4'>
+      <p>{title}</p>
+      <ProgressBar />
       <div className='flex gap-1 justify-between'>
         <Button
           type='default'
@@ -60,7 +73,19 @@ export const AudioControls = () => {
           shape='round'
           size='large'
           icon={<FastForwardFilled />}
-          onClick={playNextSong}
+          onClick={() => playNextSong()}
+        />
+        <Button
+          type='default'
+          shape='round'
+          size='large'
+          icon={(() => {
+            if (repeatMode === 'off') return <RiRepeat2Fill />
+            if (repeatMode === 'one') return <RiRepeatOneFill />
+
+            return null
+          })()}
+          onClick={toggleRepeatMode}
         />
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { HowlOptions } from 'howler'
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, ReactNode, useContext, useEffect } from 'react'
 import { AudioPlayerControls, useAudioPlayer } from 'react-use-audio-player'
 
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
+import { usePlayState } from 'src/stores/playState'
 
 export const AudioPlayerContext = createContext<
   AudioPlayerControls | undefined
@@ -13,6 +14,9 @@ export const AudioPlayerContextProvider = ({
 }: {
   children: ReactNode
 }) => {
+  const { repeatMode } = usePlayState(({ repeatMode }) => ({
+    repeatMode,
+  }))
   const { selectedSong, playNextSong } = useSongDerivatives()
 
   const playerOptions = !!selectedSong
@@ -23,12 +27,25 @@ export const AudioPlayerContextProvider = ({
         format: ['mp3'],
         autoplay: true,
         onend: () => {
-          playNextSong()
+          console.log('END')
+          if (repeatMode === 'off') {
+            playNextSong()
+          }
         },
       } as HowlOptions)
     : undefined
 
   const audioPlayer = useAudioPlayer(playerOptions)
+
+  useEffect(() => {
+    if (repeatMode === 'one') {
+      audioPlayer.player?.loop(true)
+      audioPlayer.player?.off('end')
+    } else {
+      audioPlayer.player?.loop(false)
+      audioPlayer.player?.on('end', playNextSong)
+    }
+  }, [repeatMode])
 
   return (
     <AudioPlayerContext.Provider value={audioPlayer}>
