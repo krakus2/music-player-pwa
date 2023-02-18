@@ -13,10 +13,14 @@ export default function Home() {
     <>
       <Head />
       <main className={styles.main}>
-        <div className='flex flex-col gap-2'>
-          <h1 className='text-3xl font-bold underline mb-10'>Music player</h1>
+        <div className='flex flex-col gap-2 w-[600px]'>
+          <h1 className='text-3xl font-bold underline mb-10 text-center'>
+            Music player
+          </h1>
+          <div className='flex justify-end'>
+            <AddSong />
+          </div>
 
-          <AddSong />
           <SongList />
           <AudioControls />
         </div>

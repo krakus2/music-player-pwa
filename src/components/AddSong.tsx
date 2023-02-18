@@ -22,11 +22,8 @@ export const AddSong = () => {
 
   return (
     <Upload {...addSongProps}>
-      <Button
-        style={{ display: 'flex', alignItems: 'center' }}
-        icon={<PlusOutlined />}
-      >
-        Click to add song
+      <Button style={{ display: 'flex', alignItems: 'center' }}>
+        <PlusOutlined />
       </Button>
     </Upload>
   )

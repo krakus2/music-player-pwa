@@ -28,7 +28,7 @@ export const SongList = () => {
   return (
     <div>
       <h1>Songs:</h1>
-      <div className='flex flex-col gap-1 mt-2'>
+      <div className='flex flex-col gap-1 mt-4'>
         {songs.map((song) => {
           // TODO: Probably should be moved to the context
           // TODO: Better naming to suggest that it's in regard to specific song
@@ -40,7 +40,7 @@ export const SongList = () => {
               className='flex items-center justify-between gap-3'
               key={song.file.uid}
             >
-              <div className='flex items-center gap-1'>
+              <div className='flex items-center gap-2'>
                 <Button
                   type='default'
                   shape='round'
@@ -58,7 +58,7 @@ export const SongList = () => {
                 />
                 <span>{song.file.name}</span>
               </div>
-              <div className='flex items-center gap-1'>
+              <div className='flex items-center gap-2'>
                 <span>{getMinutesFromSeconds(song.props.duration)}</span>
                 <Button
                   type='default'
