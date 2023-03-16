@@ -30,12 +30,10 @@ export const useSongDerivatives = () => {
     (songId) => songId !== selectedSong?.file.uid
   )
 
-  const randomShuffleSongId = sample(songsIdsWithoutCurrentlyPlaying)
-
-  const nextSongIndex = selectedSongIndex + 1
-  const nextSong = songs[nextSongIndex]
-  const previousSongIndex = selectedSongIndex - 1
-  const previousSong = songs[previousSongIndex]
+  const randomShuffleSongId =
+    songsIdsWithoutCurrentlyPlaying.length > 1
+      ? sample(songsIdsWithoutCurrentlyPlaying)
+      : selectedSong?.file.uid
 
   const playNextSong = () => {
     console.log('playNextSong')
@@ -51,6 +49,8 @@ export const useSongDerivatives = () => {
       return selectSong(randomShuffleSongId)
     }
 
+    const nextSong = songs[selectedSongIndex + 1]
+
     if (!nextSong) return selectSong(firstSongId)
 
     selectSong(nextSong.file.uid)
@@ -63,6 +63,8 @@ export const useSongDerivatives = () => {
 
       return selectSong(randomShuffleSongId)
     }
+
+    const previousSong = songs[selectedSongIndex - 1]
 
     if (!previousSong) return selectSong(firstSongId)
 
