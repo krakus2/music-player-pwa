@@ -10,8 +10,6 @@ interface IPlayState {
 export const usePlayState = create<IPlayState>()(
   devtools((set, get) => ({
     id: null,
-    isShuffleEnabled: false,
-    repeatMode: 'off',
     selectSong: (songId) =>
       set(() => {
         return {

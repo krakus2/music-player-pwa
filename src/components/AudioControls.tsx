@@ -20,10 +20,24 @@ export const AudioControls = () => {
   if (playerNotReady) return null
 
   const title = selectedSong.file.name.split('.')[0] ?? 'No title'
+  const songCover = selectedSong.metaData.common.picture?.[0]
 
   return (
     <div className='mt-4'>
-      <p>{title}</p>
+      <div className='flex gap-3 mb-1'>
+        {!!songCover && (
+          <img
+            width={100}
+            height={100}
+            src={URL.createObjectURL(
+              new Blob([songCover.data.buffer], { type: songCover.format })
+            )}
+          />
+        )}
+        <div className='self-end'>
+          <p>{title}</p>
+        </div>
+      </div>
       <ProgressBar />
       <div className='flex gap-1 justify-between'>
         <Button

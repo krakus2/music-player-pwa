@@ -1,4 +1,5 @@
-export const getMinutesFromSeconds = (duration: number) => {
+export const getMinutesFromSeconds = (duration: number | undefined) => {
+  if (!duration) return '00:00'
   // Hours, minutes and seconds
   const hrs = ~~(duration / 3600)
   const mins = ~~((duration % 3600) / 60)

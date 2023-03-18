@@ -15,7 +15,6 @@ export const useSongDerivatives = () => {
 
   const selectedSong = songs.find((song) => song.file.uid === id)
   const selectedSongIndex = songs.findIndex((song) => song.file.uid === id)
-
   const firstSongId = songs.map((song) => song.file.uid)[0]
 
   const playNextSong = () => {

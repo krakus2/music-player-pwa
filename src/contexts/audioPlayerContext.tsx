@@ -1,5 +1,5 @@
 import { HowlOptions } from 'howler'
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, ReactNode, useContext, useMemo } from 'react'
 import { AudioPlayerControls, useAudioPlayer } from 'react-use-audio-player'
 
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
@@ -15,18 +15,23 @@ export const AudioPlayerContextProvider = ({
 }) => {
   const { selectedSong, playNextSong } = useSongDerivatives()
 
-  const playerOptions = !!selectedSong
-    ? ({
-        src: selectedSong.objectUrl,
-        // TODO: Add some automated way to detect the format from the file
-        // format: [selectedSong.file.type],
-        format: ['mp3'],
-        autoplay: true,
-        onend: () => {
-          playNextSong
-        },
-      } as HowlOptions)
-    : undefined
+  const playerOptions = useMemo<HowlOptions | undefined>(() => {
+    if (!selectedSong) return undefined
+
+    const src = URL.createObjectURL(selectedSong.file)
+
+    return {
+      src,
+      // TODO: Add some automated way to detect the format from the file
+      // format: [selectedSong.file.type],
+      format: ['mp3'],
+      autoplay: true,
+      onend: () => {
+        playNextSong()
+        URL.revokeObjectURL(src)
+      },
+    } as HowlOptions
+  }, [selectedSong])
 
   const audioPlayer = useAudioPlayer(playerOptions)
 

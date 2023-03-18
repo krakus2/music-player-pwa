@@ -24,6 +24,7 @@ export const SongList = () => {
       getIsSelected,
     })
   )
+  console.log({ songs })
 
   return (
     <div>
@@ -59,7 +60,9 @@ export const SongList = () => {
                 <span>{song.file.name}</span>
               </div>
               <div className='flex items-center gap-2'>
-                <span>{getMinutesFromSeconds(song.props.duration)}</span>
+                <span>
+                  {getMinutesFromSeconds(song.metaData.format.duration)}
+                </span>
                 <Button
                   type='default'
                   shape='round'
