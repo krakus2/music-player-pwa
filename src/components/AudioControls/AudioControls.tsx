@@ -4,18 +4,23 @@ import {
   FastForwardFilled,
   FastBackwardFilled,
 } from '@ant-design/icons'
-import { Button } from 'antd'
+import { Button, Rate } from 'antd'
 
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
 
-import { ProgressBar } from './ProgressBar'
+import { ProgressBar } from './components'
+import { useRating } from './useRating'
 
 export const AudioControls = () => {
   const { togglePlayPause, playing, ready, loading } = useAudioPlayerContext()
   const { playNextSong, playPreviousSong, selectedSong } = useSongDerivatives()
 
   const playerNotReady = !selectedSong || !(ready || loading)
+
+  const songId = selectedSong?.file.uid
+
+  const { rating, isLoading } = useRating(songId)
 
   if (playerNotReady) return null
 
@@ -38,6 +43,13 @@ export const AudioControls = () => {
           <p>{title}</p>
         </div>
       </div>
+      {!isLoading && (
+        <div className='flex items-center gap-1'>
+          <Rate disabled defaultValue={rating} />
+          <span>({rating})</span>
+        </div>
+      )}
+
       <ProgressBar />
       <div className='flex gap-1 justify-between'>
         <Button
