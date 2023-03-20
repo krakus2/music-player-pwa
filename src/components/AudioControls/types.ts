@@ -1,9 +1,6 @@
-interface Branding<BrandT> {
-  _type: BrandT
-}
-type Brand<T, BrandT> = T & Branding<BrandT>
+import { Opaque } from 'type-fest'
 
-export type ProductId = Brand<number, 'ProductId'>
+export type ProductId = Opaque<number, 'ProductId'>
 
 // TODO: DTO?
 export interface Product {

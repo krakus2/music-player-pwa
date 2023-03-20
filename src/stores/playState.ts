@@ -1,10 +1,12 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
+import { SongId } from './songs'
+
 interface IPlayState {
-  id: string | null
-  selectSong: (songId: string) => void
-  getIsSelected: (songId: string) => boolean
+  id: SongId | null
+  selectSong: (songId: SongId) => void
+  getIsSelected: (songId: SongId) => boolean
 }
 
 export const usePlayState = create<IPlayState>()(

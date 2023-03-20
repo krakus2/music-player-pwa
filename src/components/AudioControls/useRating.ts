@@ -10,6 +10,11 @@ function randomIntFromInterval(min: number, max: number) {
 
 const stableIds = new Map()
 
+// if (typeof window !== undefined) {
+//   // @ts-ignore
+//   window.stableIds = stableIds
+// }
+
 const getStableValue = (id: string) => {
   if (stableIds.has(id)) {
     return stableIds.get(id)

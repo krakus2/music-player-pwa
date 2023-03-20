@@ -18,7 +18,9 @@ export const AudioControls = () => {
 
   const playerNotReady = !selectedSong || !(ready || loading)
 
-  const songId = selectedSong?.file.uid
+  const songId = selectedSong?.id
+
+  console.log({ songId })
 
   const { rating, isLoading } = useRating(songId)
 
@@ -43,7 +45,7 @@ export const AudioControls = () => {
           <p>{title}</p>
         </div>
       </div>
-      {!isLoading && (
+      {!isLoading && rating && (
         <div className='flex items-center gap-1'>
           <Rate disabled defaultValue={rating} />
           <span>({rating})</span>

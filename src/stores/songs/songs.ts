@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import * as mm from 'music-metadata-browser'
+import { v4 as uuidv4 } from 'uuid'
 
-import { ISongsState } from './interfaces'
+import { ISongsState, SongId } from './interfaces'
 import { SongsAsyncPersistStorage } from './persistConfig'
 
 export const useSongsStore = create<ISongsState>()(
@@ -23,6 +24,7 @@ export const useSongsStore = create<ISongsState>()(
             songs: [
               ...state.songs,
               {
+                id: uuidv4() as SongId,
                 file: newSong,
                 metaData,
               },

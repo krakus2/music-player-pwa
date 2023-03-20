@@ -33,13 +33,13 @@ export const SongList = () => {
         {songs.map((song) => {
           // TODO: Probably should be moved to the context
           // TODO: Better naming to suggest that it's in regard to specific song
-          const isSelected = getIsSelected(song.file.uid)
+          const isSelected = getIsSelected(song.id)
           const isPlaying = isSelected && playing
 
           return (
             <div
               className='flex items-center justify-between gap-3'
-              key={song.file.uid}
+              key={song.id}
             >
               <div className='flex items-center gap-2'>
                 <Button
@@ -54,7 +54,7 @@ export const SongList = () => {
                       return togglePlayPause()
                     }
 
-                    selectSong(song.file.uid)
+                    selectSong(song.id)
                   }}
                 />
                 <span>{song.file.name}</span>
@@ -70,7 +70,7 @@ export const SongList = () => {
                   size='large'
                   onClick={() => {
                     stop()
-                    deleteSong(song.file.uid)
+                    deleteSong(song.id)
                   }}
                 />
               </div>
