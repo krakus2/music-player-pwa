@@ -36,7 +36,7 @@ export const useSongsStore = create<ISongsState>()(
       deleteSong: (id) =>
         set((state) => {
           return {
-            songs: state.songs.filter((song) => song.file.uid !== id),
+            songs: state.songs.filter((song) => song.id !== id),
           }
         }),
 

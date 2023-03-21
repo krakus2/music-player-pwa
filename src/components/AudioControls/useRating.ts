@@ -10,11 +10,6 @@ function randomIntFromInterval(min: number, max: number) {
 
 const stableIds = new Map()
 
-// if (typeof window !== undefined) {
-//   // @ts-ignore
-//   window.stableIds = stableIds
-// }
-
 const getStableValue = (id: string) => {
   if (stableIds.has(id)) {
     return stableIds.get(id)
@@ -58,8 +53,8 @@ export const useRating = (songId: string | undefined) => {
       : null,
     fetcher,
     {
-      revalidateIfStale: false,
       onSuccess: (data) => {
+        console.log
         if (workerRef.current) {
           workerRef.current?.postMessage(data)
         }
