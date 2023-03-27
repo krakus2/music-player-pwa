@@ -1,13 +1,18 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import * as mm from 'music-metadata-browser'
 import { v4 as uuidv4 } from 'uuid'
+
+import { deferredPersist } from '../defferedHydrationStore'
 
 import { ISongsState, SongId } from './interfaces'
 import { SongsAsyncPersistStorage } from './persistConfig'
 
+export let hydrateStore:
+  | ((value: void | PromiseLike<void>) => void)
+  | undefined = undefined
+
 export const useSongsStore = create<ISongsState>()(
-  persist(
+  deferredPersist<ISongsState, Pick<ISongsState, 'songs'>>(
     (set) => ({
       songs: [],
       addSong: async (newSong) => {
@@ -55,6 +60,10 @@ export const useSongsStore = create<ISongsState>()(
       },
       storage: SongsAsyncPersistStorage,
       partialize: (state) => ({ songs: state.songs }),
+      hydrateOnResolve: new Promise(function (resolve) {
+        console.log('assign resolve to hydrateOnResolve')
+        hydrateStore = resolve
+      }),
     }
   )
 )

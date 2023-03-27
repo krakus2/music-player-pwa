@@ -1,7 +1,7 @@
 {
     "theme_color": "#f7f3ef",
     "background_color": "#8c8eb8",
-    "display": "browser",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "name": "Music Player PWA",

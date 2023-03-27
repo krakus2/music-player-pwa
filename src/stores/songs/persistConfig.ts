@@ -1,17 +1,20 @@
-import localforage from 'localforage'
+import localForage from 'localforage'
+import * as memoryDriver from 'localforage-driver-memory'
 import { StorageValue } from 'zustand/middleware'
 
 import { ISongsState } from './interfaces'
 
-localforage.config({
+localForage.defineDriver(memoryDriver)
+
+localForage.config({
   name: 'Music App PWA',
   storeName: 'songs DB',
-  driver: localforage.INDEXEDDB,
+  driver: [localForage.INDEXEDDB, memoryDriver._driver],
 })
 
 export const SongsAsyncPersistStorage = {
   getItem: async (key: string) => {
-    const state = await localforage.getItem<Pick<ISongsState, 'songs'>>(key)
+    const state = await localForage.getItem<Pick<ISongsState, 'songs'>>(key)
 
     if (!state) return null
 
@@ -21,9 +24,9 @@ export const SongsAsyncPersistStorage = {
     key: string,
     { state }: StorageValue<Pick<ISongsState, 'songs'>>
   ) => {
-    await localforage.setItem(key, state)
+    await localForage.setItem(key, state)
   },
   removeItem: async (key: string) => {
-    await localforage.removeItem(key)
+    await localForage.removeItem(key)
   },
 }
