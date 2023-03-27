@@ -9,6 +9,7 @@ import { useSongsStore } from 'src/stores/songs'
 import { usePlayState } from 'src/stores/playState'
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { getMinutesFromSeconds } from 'src/utils/getMinutesFromSeconds'
+import { withVibration } from 'src/utils/vibrate'
 
 export const SongList = () => {
   const { togglePlayPause, playing, stop } = useAudioPlayerContext()
@@ -48,13 +49,13 @@ export const SongList = () => {
                     isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />
                   }
                   size='large'
-                  onClick={() => {
+                  onClick={withVibration(() => {
                     if (isSelected) {
                       return togglePlayPause()
                     }
 
                     selectSong(song.id)
-                  }}
+                  })}
                 />
                 <span>{song.file.name}</span>
               </div>

@@ -8,10 +8,10 @@ import { Button, Rate } from 'antd'
 
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
+import { withVibration } from 'src/utils/vibrate'
 
 import { ProgressBar } from './components'
 import { useRating } from './useRating'
-import { vibrate } from './vibrate'
 
 export const AudioControls = () => {
   const { togglePlayPause, playing, ready, loading } = useAudioPlayerContext()
@@ -27,14 +27,6 @@ export const AudioControls = () => {
 
   const title = selectedSong.file.name.split('.')[0] ?? 'No title'
   const songCover = selectedSong.metaData.common.picture?.[0]
-
-  console.log('Audio controls')
-
-  const handleClickWithVibration = (callback: () => void) => () => {
-    console.log('handleClickWithVibration')
-    vibrate()
-    callback()
-  }
 
   return (
     <div className='mt-4'>
@@ -67,21 +59,21 @@ export const AudioControls = () => {
           shape='round'
           size='large'
           icon={<FastBackwardFilled />}
-          onClick={handleClickWithVibration(playPreviousSong)}
+          onClick={withVibration(playPreviousSong)}
         />
         <Button
           type='default'
           shape='round'
           size='large'
           icon={playing ? <PauseCircleFilled /> : <PlayCircleFilled />}
-          onClick={handleClickWithVibration(togglePlayPause)}
+          onClick={withVibration(togglePlayPause)}
         />
         <Button
           type='default'
           shape='round'
           size='large'
           icon={<FastForwardFilled />}
-          onClick={handleClickWithVibration(playNextSong)}
+          onClick={withVibration(playNextSong)}
         />
       </div>
     </div>
