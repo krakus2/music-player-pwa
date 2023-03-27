@@ -6,8 +6,6 @@ export const vibrate = () => {
   const isVibrateSupported = 'vibrate' in window.navigator
 
   if (isVibrateSupported) {
-    return window.navigator.vibrate([200])
+    window.navigator.vibrate([200])
   }
-
-  return false
 }

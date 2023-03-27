@@ -24,7 +24,6 @@ export const SongList = () => {
       getIsSelected,
     })
   )
-  console.log({ songs })
 
   return (
     <div>

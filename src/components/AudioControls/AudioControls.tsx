@@ -28,7 +28,10 @@ export const AudioControls = () => {
   const title = selectedSong.file.name.split('.')[0] ?? 'No title'
   const songCover = selectedSong.metaData.common.picture?.[0]
 
+  console.log('Audio controls')
+
   const handleClickWithVibration = (callback: () => void) => () => {
+    console.log('handleClickWithVibration')
     vibrate()
     callback()
   }
@@ -71,14 +74,14 @@ export const AudioControls = () => {
           shape='round'
           size='large'
           icon={playing ? <PauseCircleFilled /> : <PlayCircleFilled />}
-          onClick={togglePlayPause}
+          onClick={handleClickWithVibration(togglePlayPause)}
         />
         <Button
           type='default'
           shape='round'
           size='large'
           icon={<FastForwardFilled />}
-          onClick={() => playNextSong()}
+          onClick={handleClickWithVibration(playNextSong)}
         />
       </div>
     </div>
