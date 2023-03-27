@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       console.log('effect hydrate')
       hydrateStore()
     }
-  }, [hydrateStore])
+  }, [])
 
   return (
     <AudioPlayerProvider>

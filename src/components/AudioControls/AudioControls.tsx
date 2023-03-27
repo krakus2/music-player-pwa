@@ -38,6 +38,7 @@ export const AudioControls = () => {
       <div className='flex gap-3 mb-1'>
         {!!songCover && (
           <img
+            alt={`${title} cover`}
             width={100}
             height={100}
             src={URL.createObjectURL(
