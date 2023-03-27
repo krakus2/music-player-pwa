@@ -11,6 +11,7 @@ import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
 
 import { ProgressBar } from './components'
 import { useRating } from './useRating'
+import { vibrate } from './vibrate'
 
 export const AudioControls = () => {
   const { togglePlayPause, playing, ready, loading } = useAudioPlayerContext()
@@ -20,14 +21,17 @@ export const AudioControls = () => {
 
   const songId = selectedSong?.id
 
-  console.log({ songId })
-
   const { rating, isLoading } = useRating(songId)
 
   if (playerNotReady) return null
 
   const title = selectedSong.file.name.split('.')[0] ?? 'No title'
   const songCover = selectedSong.metaData.common.picture?.[0]
+
+  const handleClickWithVibration = (callback: () => void) => () => {
+    vibrate()
+    callback()
+  }
 
   return (
     <div className='mt-4'>
@@ -59,7 +63,7 @@ export const AudioControls = () => {
           shape='round'
           size='large'
           icon={<FastBackwardFilled />}
-          onClick={playPreviousSong}
+          onClick={handleClickWithVibration(playPreviousSong)}
         />
         <Button
           type='default'
