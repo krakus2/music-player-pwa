@@ -8,6 +8,8 @@ import { Button, Rate } from 'antd'
 
 import { useAudioPlayerContext } from 'src/contexts/audioPlayerContext'
 import { useSongDerivatives } from 'src/hooks/useSongDerivatives'
+import { createSongCover } from 'src/utils/createSongCover'
+import { getSongTitle } from 'src/utils/getSongTitle'
 import { withVibration } from 'src/utils/vibrate'
 
 import { ProgressBar } from './components'
@@ -25,8 +27,8 @@ export const AudioControls = () => {
 
   if (playerNotReady) return null
 
-  const title = selectedSong.file.name.split('.')[0] ?? 'No title'
-  const songCover = selectedSong.metaData.common.picture?.[0]
+  const title = getSongTitle(selectedSong)
+  const songCover = createSongCover(selectedSong)
 
   return (
     <div className='mt-4'>
@@ -36,9 +38,7 @@ export const AudioControls = () => {
             alt={`${title} cover`}
             width={100}
             height={100}
-            src={URL.createObjectURL(
-              new Blob([songCover.data.buffer], { type: songCover.format })
-            )}
+            src={songCover}
           />
         )}
         <div className='self-end'>
